@@ -1,0 +1,14 @@
+/* assets/styles.css */
+body {
+  background-color: #f7f9fb;
+}
+header.main {
+  background-color: #ffffff;
+}
+.stButton>button {
+  background-color: #0f4c81;
+  color: white;
+}
+.stAlert {
+  border-radius: 8px;
+}
