@@ -1,134 +1,69 @@
 {
-  "MDVP:Fo(Hz)": {
-    "min": 65.476,
-    "max": 260.105,
-    "median": 148.79,
-    "description": "Average vocal fundamental frequency (Hz)"
+  "features": {
+    "MDVP:Fo(Hz)": {
+      "name": "Average Vocal Fundamental Frequency",
+      "description": "The average vocal fundamental frequency in Hz",
+      "unit": "Hz",
+      "range": [50, 300]
+    },
+    "MDVP:Fhi(Hz)": {
+      "name": "Maximum Vocal Fundamental Frequency",
+      "description": "The maximum vocal fundamental frequency in Hz",
+      "unit": "Hz",
+      "range": [50, 600]
+    },
+    "MDVP:Flo(Hz)": {
+      "name": "Minimum Vocal Fundamental Frequency",
+      "description": "The minimum vocal fundamental frequency in Hz",
+      "unit": "Hz",
+      "range": [50, 300]
+    },
+    "MDVP:Jitter(%)": {
+      "name": "Jitter (Percentage)",
+      "description": "Percentage of F0 variations",
+      "unit": "%",
+      "range": [0, 0.1]
+    },
+    "MDVP: Jitter(Abs)": {
+      "name": "Jitter (Absolute)",
+      "description": "Absolute jitter in seconds",
+      "unit": "sec",
+      "range": [0, 0.001]
+    },
+    "MDVP:RAP": {
+      "name": "Relative Absolute Pitch",
+      "description":  "Relative absolute pitch variation",
+      "unit": "dimensionless",
+      "range":  [0, 0.05]
+    },
+    "MDVP:PPQ": {
+      "name": "Pitch Period Perturbation Quotient",
+      "description":  "Fine frequency variation",
+      "unit": "dimensionless",
+      "range":  [0, 0.05]
+    },
+    "HNR": {
+      "name": "Harmonics-to-Noise Ratio",
+      "description": "Ratio of harmonic to noise components",
+      "unit": "dB",
+      "range": [0, 35]
+    },
+    "RPDE": {
+      "name": "Recurrence Period Density Entropy",
+      "description": "Nonlinear measure of signal variability",
+      "unit": "dimensionless",
+      "range": [0, 1]
+    },
+    "DFA":  {
+      "name": "Detrended Fluctuation Analysis",
+      "description": "Fractal dimension of the signal",
+      "unit": "dimensionless",
+      "range": [0.4, 0.9]
+    }
   },
-  "MDVP:Fhi(Hz)": {
-    "min": 102.145,
-    "max": 592.03,
-    "median": 175.829,
-    "description": "Maximum fundamental frequency"
-  },
-  "MDVP:Flo(Hz)": {
-    "min": 65.476,
-    "max": 239.17,
-    "median": 104.315,
-    "description": "Minimum fundamental frequency"
-  },
-  "MDVP:Jitter(%)": {
-    "min": 0.00168,
-    "max": 0.03316,
-    "median": 0.00494,
-    "description": "Measure of frequency variation (jitter %)"
-  },
-  "MDVP:Jitter(Abs)": {
-    "min": 0.000007,
-    "max": 0.00026,
-    "median": 0.00003,
-    "description": "Absolute jitter"
-  },
-  "MDVP:RAP": {
-    "min": 0.00068,
-    "max": 0.02144,
-    "median": 0.0025,
-    "description": "Relative average perturbation"
-  },
-  "MDVP:PPQ": {
-    "min": 0.00092,
-    "max": 0.01958,
-    "median": 0.00269,
-    "description": "Pitch perturbation quotient"
-  },
-  "Jitter:DDP": {
-    "min": 0.00204,
-    "max": 0.06433,
-    "median": 0.00749,
-    "description": "Difference of differences of pitch period"
-  },
-  "MDVP:Shimmer": {
-    "min": 0.00954,
-    "max": 0.11908,
-    "median": 0.02297,
-    "description": "Amplitude variation (shimmer)"
-  },
-  "MDVP:Shimmer(dB)": {
-    "min": 0.085,
-    "max": 1.302,
-    "median": 0.221,
-    "description": "Shimmer in dB"
-  },
-  "Shimmer:APQ3": {
-    "min": 0.01259,
-    "max": 0.16942,
-    "median": 0.03836,
-    "description": "Three-point average shimmer"
-  },
-  "Shimmer:APQ5": {
-    "min": 0.01968,
-    "max": 0.16942,
-    "median": 0.03836,
-    "description": "Five-point average shimmer"
-  },
-  "MDVP:APQ": {
-    "min": 0.01259,
-    "max": 0.16942,
-    "median": 0.03836,
-    "description": "Amplitude perturbation quotient"
-  },
-  "Shimmer:DDA": {
-    "min": 0.01364,
-    "max": 0.16942,
-    "median": 0.046993,
-    "description": "Difference of differences of shimmer"
-  },
-  "NHR": {
-    "min": 0.00065,
-    "max": 0.31482,
-    "median": 0.01166,
-    "description": "Noise to harmonic ratio"
-  },
-  "HNR": {
-    "min": 8.441,
-    "max": 33.047,
-    "median": 22.085,
-    "description": "Harmonic to noise ratio"
-  },
-  "RPDE": {
-    "min": 0.25657,
-    "max": 0.685151,
-    "median": 0.495954,
-    "description": "Recurrence period density entropy"
-  },
-  "DFA": {
-    "min": 0.574282,
-    "max": 0.825288,
-    "median": 0.722254,
-    "description": "Detrended fluctuation analysis"
-  },
-  "spread1": {
-    "min": -7.964984,
-    "max": -2.434031,
-    "median": -5.720868,
-    "description": "Feature derived from MFCC/spread"
-  },
-  "spread2": {
-    "min": 0.006274,
-    "max": 0.450493,
-    "median": 0.218885,
-    "description": "Feature derived from MFCC/spread2"
-  },
-  "D2": {
-    "min": 1.423287,
-    "max": 3.671155,
-    "median": 2.361532,
-    "description": "Correlation dimension (D2)"
-  },
-  "PPE": {
-    "min": 0.044539,
-    "max": 0.527367,
-    "median": 0.194052,
-    "description": "Pitch period entropy-like measure (PPE)"
+  "disease_info": {
+    "name": "Parkinson's Disease",
+    "description": "A progressive disorder of the central nervous system affecting movement",
+    "warning": "This app is for educational and informational purposes only. Always consult with a healthcare professional for medical advice."
   }
 }
