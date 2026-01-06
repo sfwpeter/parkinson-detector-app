@@ -28,122 +28,50 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Simple, clean CSS
+# Fixed CSS with proper text colors
 st.markdown("""
     <style>
-    /* Clean, simple styling */
     .main {
-        padding: 2rem;
+        padding-top: 2rem;
     }
-    
-    /* Sidebar styling */
-    [data-testid="stSidebar"] {
-        background-color: #f8f9fa;
-        border-right: 1px solid #e9ecef;
-    }
-    
-    /* Button styling */
-    .stButton > button {
-        background-color: #4a6fa5;
-        color: white;
-        font-weight: bold;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        transition: all 0.3s;
-    }
-    
-    .stButton > button:hover {
-        background-color: #385d8a;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    
-    /* Number input styling */
-    .stNumberInput input {
-        border: 2px solid #e0e0e0;
-        border-radius: 6px;
-    }
-    
-    .stNumberInput input:focus {
-        border-color: #4a6fa5;
-        box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
-    }
-    
-    /* Tab styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 2px;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        background-color: #f0f2f6;
-        border-radius: 4px 4px 0 0;
-        padding: 10px 20px;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background-color: white;
-        border-bottom: 2px solid #4a6fa5;
-    }
-    
-    /* Metrics */
-    [data-testid="stMetricValue"] {
-        font-size: 1.5rem;
-    }
-    
-    /* Dataframe */
-    .dataframe {
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-    }
-    
-    /* Hide Streamlit branding */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    
-    /* Prediction boxes */
     .prediction-box {
-        padding: 1.5rem;
+        padding: 20px;
         border-radius: 10px;
-        margin: 1rem 0;
-        border-left: 5px solid;
+        margin: 10px 0;
     }
-    
     .positive {
-        background-color: #ffeaea;
-        border-left-color: #dc3545;
+        background-color: #ffebee;
+        border-left: 4px solid #d32f2f;
+        color: #5a0000 !important;
     }
-    
     .negative {
         background-color: #e8f5e9;
-        border-left-color: #28a745;
+        border-left: 4px solid #388e3c;
+        color: #003300 !important;
     }
-    
-    /* Headers */
-    h1 {
-        color: #2c3e50;
-        margin-bottom: 1.5rem;
-    }
-    
-    h2 {
-        color: #34495e;
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
-    }
-    
-    h3 {
-        color: #2c3e50;
-    }
-    
-    /* Alerts */
-    .stAlert {
+    .metric-card {
+        background-color: #f5f5f5;
+        padding: 15px;
         border-radius: 8px;
+        margin: 10px 0;
     }
     
-    /* Make text readable */
-    p, li {
-        line-height: 1.6;
+    /* Fix sidebar text color */
+    section[data-testid="stSidebar"] {
+        color: #333333 !important;
+    }
+    
+    section[data-testid="stSidebar"] * {
+        color: #333333 !important;
+    }
+    
+    /* Fix prediction text specifically */
+    .positive h3, .positive p {
+        color: #5a0000 !important;
+    }
+    
+    .negative h3, .negative p {
+        color: #003300 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -159,7 +87,10 @@ def load_feature_info():
         return None
 
 def create_input_form():
-    """Create the input form for user data."""
+    """Create the input form for user data (uses FEATURE_COLUMNS from preprocessing).
+
+    This implementation keeps inputs consistent with the model's expected features.
+    """
     st.subheader("📊 Enter Patient Voice Measurements")
 
     raw_feature_info = load_feature_info() or {}
@@ -167,11 +98,12 @@ def create_input_form():
 
     input_data = {}
 
-    # Two columns layout
+    # layout: two columns, distribute features
     cols = st.columns(2)
     for i, feat in enumerate(FEATURE_COLUMNS):
         col = cols[i % 2]
         default = 0.0
+        # sensible defaults for some known features
         defaults = {
             'MDVP:Fo(Hz)': 150.0,
             'MDVP:Fhi(Hz)': 180.0,
@@ -207,7 +139,6 @@ def create_input_form():
                 value=float(default),
                 help=help_text,
                 format="%.6f",
-                key=f"input_{feat}"
             )
 
     return input_data
@@ -236,22 +167,22 @@ def display_predictions(model, scaler, input_data):
         explanation = get_prediction_explanation(prediction, probabilities)
         
         # Display results
-        col1, col2 = st.columns([2, 1])
+        col1, col2 = st. columns([2, 1])
         
         with col1:
             if prediction == 1:
                 st.markdown(
                     f'<div class="prediction-box positive">'
-                    f'<h3>⚠️ {explanation["status"]}</h3>'
-                    f'<p>{explanation["description"]}</p>'
+                    f'{explanation["status"]}<br>'
+                    f'{explanation["description"]}'
                     f'</div>',
                     unsafe_allow_html=True
                 )
             else:
                 st.markdown(
                     f'<div class="prediction-box negative">'
-                    f'<h3>✅ {explanation["status"]}</h3>'
-                    f'<p>{explanation["description"]}</p>'
+                    f'{explanation["status"]}<br>'
+                    f'{explanation["description"]}'
                     f'</div>',
                     unsafe_allow_html=True
                 )
@@ -263,34 +194,33 @@ def display_predictions(model, scaler, input_data):
                 delta=None
             )
         
-        # Display probability chart
+        # Display probability gauge
         st.subheader("📈 Probability Distribution")
         
         fig = go.Figure(data=[
             go.Bar(
                 x=['Negative', 'Positive'],
                 y=[probabilities[0] * 100, probabilities[1] * 100],
-                marker_color=['#28a745', '#dc3545'],
-                text=[f'{probabilities[0]*100:.1f}%', f'{probabilities[1]*100:.1f}%'],
+                marker_color=['#4CAF50', '#f44336'],
+                text=[f'{probabilities[0]*100:.2f}%', f'{probabilities[1]*100:.2f}%'],
                 textposition='auto'
             )
         ])
         
         fig.update_layout(
-            height=300,
+            height=400,
             showlegend=False,
             yaxis_title="Probability (%)",
-            xaxis_title="Prediction Class",
-            margin=dict(l=20, r=20, t=20, b=20)
+            xaxis_title="Prediction Class"
         )
         
         st.plotly_chart(fig, use_container_width=True)
         
-        # Display feature values
-        st.subheader("📋 Input Features")
+        # Display feature values table
+        st.subheader("📋 Input Features Summary")
         
         features_display = pd.DataFrame({
-            'Feature': list(input_data.keys()),
+            'Feature':  list(input_data.keys()),
             'Value': list(input_data.values())
         }).round(6)
         
@@ -312,19 +242,17 @@ def display_model_info(model):
             st.metric("Model Type", model_info['model_type'])
         
         with col2:
-            st.metric("Feature Importance", 
-                     "Yes" if model_info['has_feature_importance'] else "No")
+            st.metric("Feature Importance", "Available" if model_info['has_feature_importance'] else "N/A")
         
         with col3:
-            st.metric("Probability", 
-                     "Yes" if model_info['has_predict_proba'] else "No")
+            st.metric("Probability Support", "Yes" if model_info['has_predict_proba'] else "No")
         
         # Display feature importance if available
         if model_info['has_feature_importance']:
             st.subheader("🎯 Feature Importance")
             
             importance_df = pd.DataFrame({
-                'Feature': FEATURE_COLUMNS,
+                'Feature':  FEATURE_COLUMNS,
                 'Importance': model_info['feature_importances']
             }).sort_values('Importance', ascending=False).head(10)
             
@@ -333,18 +261,18 @@ def display_model_info(model):
                     x=importance_df['Importance'],
                     y=importance_df['Feature'],
                     orientation='h',
-                    marker_color='#4a6fa5'
+                    marker_color='#2196F3'
                 )
             ])
             
-            fig.update_layout(
-                height=300,
+            fig. update_layout(
+                height=400,
                 xaxis_title="Importance",
                 yaxis_title="Feature",
-                margin=dict(l=20, r=20, t=20, b=20)
+                showlegend=False
             )
             
-            st.plotly_chart(fig, use_container_width=True)
+            st. plotly_chart(fig, use_container_width=True)
 
 def main():
     """Main application function."""
@@ -381,7 +309,7 @@ def main():
             model, scaler = load_models()
         
         if model is None:
-            st.error("""
+            st. error("""
             ⚠️ Error loading models! 
             
             Please ensure you have: 
@@ -405,14 +333,17 @@ def main():
             # Validation
             errors, warnings = validate_input(input_data)
             
-            if errors or warnings: 
+            if errors: 
                 st.warning("⚠️ **Validation Warnings:**")
                 for error in errors:
                     st.warning(f"- {error}")
             
             # Predict button
-            if st.button("🔍 Make Prediction", use_container_width=True):
-                display_predictions(model, scaler, input_data)
+            col1, col2 = st. columns([1, 3])
+            
+            with col1:
+                if st.button("🔍 Make Prediction", use_container_width=True):
+                    display_predictions(model, scaler, input_data)
         
         with tab2:
             display_model_info(model)
