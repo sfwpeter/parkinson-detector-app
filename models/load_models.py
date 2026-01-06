@@ -1,49 +1,49 @@
 # models/load_models.py
-import os
-import pickle
-import streamlit as st
+"""Utility to load the trained model and scaler used by the Streamlit app.
+
+This module keeps the model-loading logic in one place and uses
+Streamlit's cache to avoid reloading on every interaction.
+"""
 from pathlib import Path
+import joblib
+import streamlit as st
+
 
 @st.cache_resource
-def load_models():
-    """
-    Load pre-trained models and scaler from pickle files.
-    Using Streamlit's cache to load models only once.
+def load_models() -> tuple:
+    """Load model and scaler from the `models/` directory.
+
+    Returns (model, scaler) where scaler may be None if not found.
     """
     try:
-        # Get the directory where this file is located
-        current_dir = Path(__file__).parent.parent
-        models_dir = current_dir / "models"
-        
-        # Load the main model
-        model_path = models_dir / "parkinsons_model.pkl"
+        # models/load_models.py lives in the `models` package directory
+        models_dir = Path(__file__).parent
+
+        # filenames in this repo
+        model_path = models_dir / "parkinsons_best_model.pkl"
+        scaler_path = models_dir / "parkinsons_scaler.pkl"
+
         if not model_path.exists():
             st.error(f"Model file not found at {model_path}")
             return None, None
-        
-        with open(model_path, 'rb') as f:
-            model = pickle.load(f)
-        
-        # Load the scaler
-        scaler_path = models_dir / "scaler.pkl"
+
+        model = joblib.load(model_path)
+
         if not scaler_path.exists():
             st.warning(f"Scaler file not found at {scaler_path}")
             scaler = None
-        else: 
-            with open(scaler_path, 'rb') as f:
-                scaler = pickle.load(f)
-        
+        else:
+            scaler = joblib.load(scaler_path)
+
         return model, scaler
-    
-    except Exception as e:
-        st.error(f"Error loading models: {str(e)}")
+
+    except Exception as exc:
+        st.error(f"Error loading models: {exc}")
         return None, None
 
 
-def get_model_info(model):
-    """
-    Extract information about the loaded model.
-    """
+def get_model_info(model: object) -> dict:
+    """Return small dictionary describing the loaded model."""
     try:
         model_type = type(model).__name__
         info = {
@@ -51,11 +51,11 @@ def get_model_info(model):
             "has_feature_importance": hasattr(model, 'feature_importances_'),
             "has_predict_proba": hasattr(model, 'predict_proba'),
         }
-        
+
         if hasattr(model, 'feature_importances_'):
-            info["feature_importances"] = model.feature_importances_
-        
+            info["feature_importances"] = list(model.feature_importances_)
+
         return info
-    except Exception as e:
-        st. error(f"Error extracting model info: {str(e)}")
+    except Exception as exc:
+        st.error(f"Error extracting model info: {exc}")
         return None

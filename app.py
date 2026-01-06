@@ -7,16 +7,16 @@ from pathlib import Path
 import json
 import sys
 
-# Fix the import issue by adding the parent directory to path
+# Fix the import issue by adding the project directory to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-# Now import from models module
-from models. load_models import load_models, get_model_info
+# Import from models module
+from models.load_models import load_models, get_model_info
 from models.preprocessing import (
-    validate_input, 
-    prepare_features, 
+    validate_input,
+    prepare_features,
     get_prediction_explanation,
-    FEATURE_COLUMNS
+    FEATURE_COLUMNS,
 )
 
 # Configure page
@@ -58,7 +58,7 @@ st.markdown("""
 def load_feature_info():
     """Load feature information from JSON file."""
     try:
-        feature_file = Path(__file__).parent / "data" / "feature_info.json"
+        feature_file = Path(__file__).parent / "data" / "data_feature_info.json"
         with open(feature_file, 'r') as f:
             return json.load(f)
     except Exception as e:
@@ -66,162 +66,60 @@ def load_feature_info():
         return None
 
 def create_input_form():
-    """Create the input form for user data."""
+    """Create the input form for user data (uses FEATURE_COLUMNS from preprocessing).
+
+    This implementation keeps inputs consistent with the model's expected features.
+    """
     st.subheader("📊 Enter Patient Voice Measurements")
-    
-    feature_info = load_feature_info()
-    
-    # Create columns for better layout
+
+    raw_feature_info = load_feature_info() or {}
+    feature_info = raw_feature_info.get('features', {}) if isinstance(raw_feature_info, dict) else {}
+
     input_data = {}
-    
-    # Organize inputs in groups
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("### Frequency Features")
-        input_data['MDVP:Fo(Hz)'] = st.number_input(
-            "MDVP:Fo(Hz) - Average Fundamental Frequency",
-            min_value=50.0, max_value=300.0, value=150.0, step=0.1,
-            help="Average vocal fundamental frequency in Hz"
-        )
-        
-        input_data['MDVP:Fhi(Hz)'] = st.number_input(
-            "MDVP: Fhi(Hz) - Maximum Fundamental Frequency",
-            min_value=50.0, max_value=600.0, value=180.0, step=0.1,
-            help="Maximum vocal fundamental frequency in Hz"
-        )
-        
-        input_data['MDVP:Flo(Hz)'] = st.number_input(
-            "MDVP:Flo(Hz) - Minimum Fundamental Frequency",
-            min_value=50.0, max_value=300.0, value=120.0, step=0.1,
-            help="Minimum vocal fundamental frequency in Hz"
-        )
-        
-        st.markdown("### Jitter Features")
-        input_data['MDVP:Jitter(%)'] = st.number_input(
-            "MDVP:Jitter(%) - Jitter Percentage",
-            min_value=0.0, max_value=0.1, value=0.005, step=0.0001,
-            help="Percentage of F0 variations"
-        )
-        
-        input_data['MDVP: Jitter(Abs)'] = st.number_input(
-            "MDVP: Jitter(Abs) - Absolute Jitter",
-            min_value=0.0, max_value=0.001, value=0.00005, step=0.000001,
-            help="Absolute jitter in seconds"
-        )
-        
-        input_data['MDVP: RAP'] = st.number_input(
-            "MDVP:RAP",
-            min_value=0.0, max_value=0.05, value=0.003, step=0.0001,
-            help="Relative Absolute Pitch"
-        )
-        
-        input_data['MDVP:PPQ'] = st.number_input(
-            "MDVP:PPQ",
-            min_value=0.0, max_value=0.05, value=0.003, step=0.0001,
-            help="Pitch Period Perturbation Quotient"
-        )
-        
-        input_data['Jitter:DDP'] = st.number_input(
-            "Jitter:DDP",
-            min_value=0.0, max_value=0.1, value=0.01, step=0.0001,
-            help="Jitter - Differential Divergence Period"
-        )
-    
-    with col2:
-        st.markdown("### Shimmer Features")
-        input_data['MDVP:Shimmer'] = st.number_input(
-            "MDVP: Shimmer",
-            min_value=0.0, max_value=0.2, value=0.03, step=0.001,
-            help="Amplitude variation"
-        )
-        
-        input_data['MDVP: Shimmer(dB)'] = st.number_input(
-            "MDVP: Shimmer(dB)",
-            min_value=0.0, max_value=2.0, value=0.3, step=0.01,
-            help="Amplitude variation in dB"
-        )
-        
-        input_data['Shimmer:APQ3'] = st.number_input(
-            "Shimmer:APQ3",
-            min_value=0.0, max_value=0.1, value=0.015, step=0.001,
-            help="Shimmer - Amplitude Perturbation Quotient"
-        )
-        
-        input_data['Shimmer:APQ5'] = st.number_input(
-            "Shimmer:APQ5",
-            min_value=0.0, max_value=0.1, value=0.018, step=0.001,
-            help="Shimmer - Amplitude Perturbation Quotient"
-        )
-        
-        input_data['MDVP:APQ'] = st.number_input(
-            "MDVP:APQ",
-            min_value=0.0, max_value=0.1, value=0.02, step=0.001,
-            help="Amplitude Perturbation Quotient"
-        )
-        
-        input_data['Shimmer:DDA'] = st. number_input(
-            "Shimmer:DDA",
-            min_value=0.0, max_value=0.2, value=0.04, step=0.001,
-            help="Shimmer - Differential Divergence Amplitude"
-        )
-        
-        st.markdown("### Noise & Harmonic Features")
-        input_data['NHR'] = st.number_input(
-            "NHR - Noise-to-Harmonic Ratio",
-            min_value=0.0, max_value=0.5, value=0.02, step=0.001,
-            help="Ratio of noise to harmonic components"
-        )
-        
-        input_data['HNR'] = st.number_input(
-            "HNR - Harmonics-to-Noise Ratio",
-            min_value=0.0, max_value=35.0, value=21.0, step=0.1,
-            help="Ratio of harmonic to noise components"
-        )
-    
-    # Additional features in another set of columns
-    col3, col4 = st.columns(2)
-    
-    with col3:
-        st.markdown("### Nonlinear Features")
-        input_data['RPDE'] = st.number_input(
-            "RPDE - Recurrence Period Density Entropy",
-            min_value=0.0, max_value=1.0, value=0.5, step=0.01,
-            help="Nonlinear measure of signal variability"
-        )
-        
-        input_data['DFA'] = st.number_input(
-            "DFA - Detrended Fluctuation Analysis",
-            min_value=0.4, max_value=0.9, value=0.71, step=0.01,
-            help="Fractal dimension of the signal"
-        )
-        
-        input_data['D2'] = st.number_input(
-            "D2 - Correlation Dimension",
-            min_value=1.0, max_value=4.0, value=2.3, step=0.1,
-            help="Correlation dimension of signal"
-        )
-    
-    with col4:
-        st. markdown("### Recurrence Features")
-        input_data['spread1'] = st.number_input(
-            "spread1 - First Recurrence Plot Spread",
-            min_value=-8.0, max_value=0.0, value=-5.0, step=0.1,
-            help="Nonlinear measure of recurrence"
-        )
-        
-        input_data['spread2'] = st.number_input(
-            "spread2 - Second Recurrence Plot Spread",
-            min_value=0.0, max_value=0.5, value=0.2, step=0.01,
-            help="Nonlinear measure of recurrence"
-        )
-        
-        input_data['PPE'] = st.number_input(
-            "PPE - Pitch Period Entropy",
-            min_value=0.0, max_value=1.0, value=0.2, step=0.01,
-            help="Entropy of pitch period"
-        )
-    
+
+    # layout: two columns, distribute features
+    cols = st.columns(2)
+    for i, feat in enumerate(FEATURE_COLUMNS):
+        col = cols[i % 2]
+        default = 0.0
+        # sensible defaults for some known features
+        defaults = {
+            'MDVP:Fo(Hz)': 150.0,
+            'MDVP:Fhi(Hz)': 180.0,
+            'MDVP:Flo(Hz)': 120.0,
+            'MDVP:Jitter(%)': 0.005,
+            'MDVP:Jitter(Abs)': 0.00005,
+            'MDVP:RAP': 0.003,
+            'MDVP:PPQ': 0.003,
+            'Jitter:DDP': 0.01,
+            'MDVP:Shimmer': 0.03,
+            'MDVP:Shimmer(dB)': 0.3,
+            'Shimmer:APQ3': 0.015,
+            'Shimmer:APQ5': 0.018,
+            'MDVP:APQ': 0.02,
+            'Shimmer:DDA': 0.04,
+            'NHR': 0.02,
+            'HNR': 21.0,
+            'RPDE': 0.5,
+            'DFA': 0.71,
+            'D2': 2.3,
+            'spread1': -5.0,
+            'spread2': 0.2,
+            'PPE': 0.2,
+        }
+        if feat in defaults:
+            default = defaults[feat]
+
+        help_text = feature_info.get(feat, {}).get('description') if isinstance(feature_info, dict) else None
+
+        with col:
+            input_data[feat] = st.number_input(
+                label=feat,
+                value=float(default),
+                help=help_text,
+                format="%.6f",
+            )
+
     return input_data
 
 def display_predictions(model, scaler, input_data):
