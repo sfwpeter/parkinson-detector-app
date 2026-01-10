@@ -25,109 +25,290 @@ from models.preprocessing import (
 
 # ---------- Page Configuration ----------
 st.set_page_config(
-    page_title="Prempehs Parkinson's Disease Detector",
+    page_title="Parkinson's Disease Detector",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# ---------- Custom CSS for professional theme + deep blue sidebar ----------
+# ---------- Custom CSS for black-blue theme ----------
 st.markdown("""
     <style>
-    /* General background */
+    /* General background - dark theme */
     .stApp {
-        background-color: #cce6ff;
-        color: #000000;
-        font-family: 'Open Sans', sans-serif;
+        background-color: #0a1929;
+        color: #e6f7ff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    /* Card styling */
-    .stContainer {
-        background-color: #ffffff;
-        border-radius: 10px;
-        padding: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    
+    /* Main content area */
+    .main .block-container {
+        background-color: #0a1929;
     }
+    
     /* Headers */
     h1, h2, h3, h4, h5 {
-        color: #003366;
-        font-family: 'Open Sans', sans-serif;
+        color: #3399ff !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 600;
     }
+    
+    /* Text color */
+    p, div, span {
+        color: #cce7ff !important;
+    }
+    
     /* Buttons */
     .stButton>button {
-        background-color: #007acc;
+        background-color: #0066cc;
         color: white;
-        border-radius: 8px;
-        padding: 0.5em 1em;
+        border: none;
+        border-radius: 6px;
+        padding: 0.75em 1.5em;
         font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
     }
-    /* Info and warning boxes */
-    .stInfo, .stWarning {
-        border-left: 4px solid #007acc;
-        background-color: #e6f2ff;
-        padding: 10px;
-        border-radius: 5px;
+    
+    .stButton>button:hover {
+        background-color: #0052a3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
     }
-    /* Deep blue sidebar */
+    
+    /* Input fields */
+    .stNumberInput>div>div>input {
+        background-color: #1e3a5f;
+        color: #e6f7ff;
+        border: 1px solid #3399ff;
+        border-radius: 4px;
+    }
+    
+    .stNumberInput label {
+        color: #99ccff !important;
+        font-weight: 500;
+    }
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: #1e3a5f;
+        padding: 4px;
+        border-radius: 8px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background-color: #1e3a5f;
+        color: #99ccff;
+        border-radius: 4px;
+        padding: 8px 16px;
+        font-weight: 500;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: #0066cc !important;
+        color: white !important;
+    }
+    
+    /* Sidebar - dark blue */
     section[data-testid="stSidebar"] {
-        background-color: #003366;
-        color: #ffffff !important;
+        background-color: #001e3c !important;
+        border-right: 1px solid #3399ff;
     }
-    section[data-testid="stSidebar"] label,
-    section[data-testid="stSidebar"] div,
-    section[data-testid="stSidebar"] p,
-    section[data-testid="stSidebar"] span {
-        color: #ffffff !important;
-        font-weight: bold;
+    
+    section[data-testid="stSidebar"] * {
+        color: #e6f7ff !important;
     }
+    
     section[data-testid="stSidebar"] h2, 
     section[data-testid="stSidebar"] h3 {
-        color: #ffffff;
+        color: #66b3ff !important;
     }
-    /* Welcome section styling */
+    
+    section[data-testid="stSidebar"] .stRadio>div {
+        background-color: #1e3a5f;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 5px 0;
+    }
+    
+    /* Welcome section */
     .welcome-box {
-        background: linear-gradient(135deg, #003366 0%, #005599 100%);
-        padding: 2rem;
-        border-radius: 15px;
+        background: linear-gradient(135deg, #001e3c 0%, #003366 100%);
+        padding: 2.5rem;
+        border-radius: 12px;
         color: white;
         text-align: center;
         margin-bottom: 2rem;
+        border: 1px solid #3399ff;
+        box-shadow: 0 4px 20px rgba(51, 153, 255, 0.15);
     }
-    .feature-card {
-        background-color: white;
-        padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    
+    .welcome-box h1 {
+        color: white !important;
+        font-size: 2.5rem;
         margin-bottom: 1rem;
     }
+    
+    /* Feature cards */
+    .feature-card {
+        background-color: #1e3a5f;
+        padding: 1.5rem;
+        border-radius: 10px;
+        border-left: 4px solid #3399ff;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .feature-card h3, .feature-card h4 {
+        color: #66b3ff !important;
+    }
+    
     /* Prediction boxes */
     .prediction-box {
-        padding: 20px;
+        padding: 25px;
         border-radius: 10px;
-        margin: 10px 0;
+        margin: 15px 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
+    
     .positive {
-        background-color: #ffebee;
-        border-left: 4px solid #d32f2f;
-        color: #5a0000 !important;
+        background-color: #331111;
+        border-left: 5px solid #ff4d4d;
+        color: #ffcccc !important;
     }
+    
+    .positive h3 {
+        color: #ff9999 !important;
+    }
+    
     .negative {
-        background-color: #e8f5e9;
-        border-left: 4px solid #388e3c;
-        color: #003300 !important;
+        background-color: #113311;
+        border-left: 5px solid #4dff4d;
+        color: #ccffcc !important;
     }
+    
+    .negative h3 {
+        color: #99ff99 !important;
+    }
+    
+    /* Metric cards */
     .metric-card {
-        background-color: #f5f5f5;
-        padding: 15px;
-        border-radius: 8px;
+        background-color: #1e3a5f;
+        padding: 1.5rem;
+        border-radius: 10px;
+        border: 1px solid #3399ff;
         margin: 10px 0;
+        text-align: center;
     }
-    /* Fix prediction text specifically */
-    .positive h3, .positive p {
-        color: #5a0000 !important;
+    
+    /* Progress bars */
+    .stProgress > div > div > div > div {
+        background-color: #3399ff;
     }
-    .negative h3, .negative p {
-        color: #003300 !important;
+    
+    /* Expanders */
+    .streamlit-expanderHeader {
+        background-color: #1e3a5f;
+        color: #66b3ff !important;
+        border-radius: 6px;
+        border: 1px solid #3399ff;
     }
+    
+    /* Dataframes */
+    .dataframe {
+        background-color: #1e3a5f !important;
+    }
+    
+    /* Alert boxes */
+    .stAlert {
+        background-color: #1e3a5f;
+        border-left: 4px solid #3399ff;
+        border-radius: 8px;
+    }
+    
+    .stAlert [data-testid="stMarkdownContainer"] p {
+        color: #cce7ff !important;
+    }
+    
+    /* File uploader */
+    .stFileUploader>div>div {
+        background-color: #1e3a5f;
+        border: 2px dashed #3399ff;
+        border-radius: 8px;
+    }
+    
+    /* Footer */
+    .footer {
+        text-align: center;
+        padding: 1.5rem;
+        color: #99ccff !important;
+        font-size: 0.9rem;
+        margin-top: 3rem;
+        border-top: 1px solid #3399ff;
+    }
+    
+    /* Fix all text visibility */
+    .stDataFrame, .stTable {
+        color: #cce7ff !important;
+    }
+    
+    .stDataFrame td, .stDataFrame th {
+        color: #cce7ff !important;
+        background-color: #1e3a5f !important;
+    }
+    
+    /* Fix plotly charts background */
+    .js-plotly-plot {
+        background-color: #1e3a5f !important;
+    }
+    
+    /* Info boxes */
+    .stInfo {
+        background-color: #1e3a5f !important;
+        border-left: 4px solid #3399ff !important;
+    }
+    
+    /* Warning boxes */
+    .stWarning {
+        background-color: #332211 !important;
+        border-left: 4px solid #ff9900 !important;
+    }
+    
+    /* Error boxes */
+    .stError {
+        background-color: #331111 !important;
+        border-left: 4px solid #ff3333 !important;
+    }
+    
+    /* Success boxes */
+    .stSuccess {
+        background-color: #113311 !important;
+        border-left: 4px solid #33cc33 !important;
+    }
+    
+    /* Radio buttons in sidebar */
+    section[data-testid="stSidebar"] .stRadio label {
+        color: #e6f7ff !important;
+        padding: 8px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+    
+    section[data-testid="stSidebar"] .stRadio label:hover {
+        background-color: #2d4a75;
+    }
+    
+    /* Markdown text */
+    .stMarkdown {
+        color: #cce7ff !important;
+    }
+    
+    /* Spinner */
+    .stSpinner > div {
+        border-color: #3399ff transparent transparent transparent !important;
+    }
+    
     </style>
 """, unsafe_allow_html=True)
 
@@ -141,49 +322,56 @@ def load_feature_info():
         st.warning(f"Could not load feature info: {str(e)}")
         return None
 
-# ---------- Utility: animated circular gauge ----------
-def show_animated_gauge(container, percent:int, color:str, label:str):
-    """Display animated gauge chart"""
+# ---------- Utility: circular gauge ----------
+def show_gauge(container, percent:int, color:str, label:str):
+    """Display gauge chart"""
     percent = max(0, min(100, int(round(percent))))
-    for val in range(0, percent + 1):
-        fig = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=val,
-            number={'valueformat': "d", 'suffix': '%', 'font': {'size': 24}},
-            title={'text': label, 'font': {'size': 14}},
-            gauge={
-                'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': "darkgrey"},
-                'bar': {'color': color},
-                'bgcolor': "#e6f7ff",
-                'steps': [
-                    {'range': [0, 50], 'color': "#cce6ff"},
-                    {'range': [50, 100], 'color': "#99ccff"}
-                ],
-                'threshold': {
-                    'line': {'color': color, 'width': 4},
-                    'thickness': 0.75,
-                    'value': val
-                }
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=percent,
+        number={'valueformat': "d", 'suffix': '%', 'font': {'size': 28, 'color': '#ffffff'}},
+        title={'text': label, 'font': {'size': 16, 'color': '#99ccff'}},
+        gauge={
+            'axis': {'range': [0, 100], 'tickwidth': 2, 'tickcolor': '#3399ff', 'tickfont': {'color': '#ffffff'}},
+            'bar': {'color': color},
+            'bgcolor': "#1e3a5f",
+            'borderwidth': 2,
+            'bordercolor': "#3399ff",
+            'steps': [
+                {'range': [0, 30], 'color': "#113311"},
+                {'range': [30, 70], 'color': "#332211"},
+                {'range': [70, 100], 'color': "#331111"}
+            ],
+            'threshold': {
+                'line': {'color': color, 'width': 4},
+                'thickness': 0.85,
+                'value': percent
             }
-        ))
-        fig.update_layout(margin=dict(l=20, r=20, t=30, b=10), height=320)
-        container.plotly_chart(fig, use_container_width=True)
-        time.sleep(0.01)
+        }
+    ))
+    
+    fig.update_layout(
+        margin=dict(l=30, r=30, t=40, b=20),
+        height=340,
+        paper_bgcolor='#0a1929',
+        font={'color': "#ffffff"}
+    )
+    container.plotly_chart(fig, use_container_width=True)
 
 # ---------- Footer Function ----------
 def show_footer():
     """Display copyright footer on all pages"""
-    st.markdown("---")
     st.markdown("""
-    <div style="text-align: center; padding: 1rem; color: #666;">
-        <p style="margin: 0.2rem;">© 2026 Prempehs Parkinson's Disease Detector</p>
-        <p style="margin: 0.2rem;">Developed by <strong>Prempeh AI Research Team</strong></p>
+    <div class="footer">
+        <p style="margin: 0.2rem;">© 2024 Parkinson's Disease Detector</p>
+        <p style="margin: 0.2rem;">Developed with ❤️ for medical research</p>
+        <p style="margin: 0.2rem; font-size: 0.8rem; color: #66b3ff !important;">For educational purposes only</p>
     </div>
     """, unsafe_allow_html=True)
 
 def create_input_form():
     """Create the input form for user data with enhanced layout and descriptions."""
-    st.subheader("📊 Enter Patient Voice Measurements")
+    st.subheader("📊 Enter Voice Measurements")
     
     raw_feature_info = load_feature_info() or {}
     feature_info = raw_feature_info.get('features', {}) if isinstance(raw_feature_info, dict) else {}
@@ -295,7 +483,7 @@ def display_predictions(model, scaler, input_data, container=None):
             if prediction == 1:
                 container.markdown(
                     f'<div class="prediction-box positive">'
-                    f'<h3>⚠️ Parkinson\'s Disease Likely Detected</h3>'
+                    f'<h3>⚠️ Parkinson\'s Disease Risk Detected</h3>'
                     f'<p><strong>Confidence Level:</strong> {explanation["confidence"]:.2f}%</p>'
                     f'<p>{explanation["description"]}</p>'
                     f'</div>',
@@ -304,7 +492,7 @@ def display_predictions(model, scaler, input_data, container=None):
             else:
                 container.markdown(
                     f'<div class="prediction-box negative">'
-                    f'<h3>✅ No Parkinson\'s Disease Detected</h3>'
+                    f'<h3>✅ No Parkinson\'s Disease Risk Detected</h3>'
                     f'<p><strong>Confidence Level:</strong> {explanation["confidence"]:.2f}%</p>'
                     f'<p>{explanation["description"]}</p>'
                     f'</div>',
@@ -312,11 +500,10 @@ def display_predictions(model, scaler, input_data, container=None):
                 )
         
         with col2:
-            # Animated gauge
+            # Gauge
             conf_percent = explanation['confidence']
-            gauge_color = "red" if prediction == 1 else "green"
-            gauge_container = container.empty()
-            show_animated_gauge(gauge_container, conf_percent, gauge_color, "Confidence Level")
+            gauge_color = "#ff4d4d" if prediction == 1 else "#4dff4d"
+            show_gauge(container, conf_percent, gauge_color, "Confidence Level")
         
         # Display probability distribution
         container.subheader("📈 Probability Distribution")
@@ -325,10 +512,10 @@ def display_predictions(model, scaler, input_data, container=None):
             go.Bar(
                 x=['Negative', 'Positive'],
                 y=[probabilities[0] * 100, probabilities[1] * 100],
-                marker_color=['#4CAF50', '#f44336'],
+                marker_color=['#33cc33', '#ff3333'],
                 text=[f'{probabilities[0]*100:.2f}%', f'{probabilities[1]*100:.2f}%'],
                 textposition='auto',
-                textfont=dict(size=14)
+                textfont=dict(size=14, color='#ffffff')
             )
         ])
         
@@ -338,32 +525,15 @@ def display_predictions(model, scaler, input_data, container=None):
             yaxis_title="Probability (%)",
             xaxis_title="Prediction Class",
             title="Probability Distribution of Prediction Classes",
-            title_font=dict(size=16)
+            title_font=dict(size=16, color='#66b3ff'),
+            paper_bgcolor='#0a1929',
+            plot_bgcolor='#1e3a5f',
+            font=dict(color='#ffffff'),
+            xaxis=dict(tickfont=dict(color='#ffffff')),
+            yaxis=dict(tickfont=dict(color='#ffffff'))
         )
         
         container.plotly_chart(fig, use_container_width=True)
-        
-        # Display feature importance for this prediction
-        if hasattr(model, 'feature_importances_'):
-            container.subheader("🎯 Feature Contribution to This Prediction")
-            
-            # Get feature importances
-            importances = model.feature_importances_
-            importance_df = pd.DataFrame({
-                'Feature': FEATURE_COLUMNS,
-                'Importance': importances
-            }).sort_values('Importance', ascending=False).head(10)
-            
-            # Highlight features with extreme values
-            extreme_features = []
-            for feat in FEATURE_COLUMNS:
-                val = input_data.get(feat, 0)
-                # Check if value is significantly different from normal range
-                if feat in ['MDVP:Jitter(%)', 'MDVP:Shimmer', 'NHR'] and val > 0.1:
-                    extreme_features.append(feat)
-            
-            if extreme_features:
-                container.warning(f"⚠️ **Note:** High values detected in: {', '.join(extreme_features)}")
         
         # Display feature values table
         with container.expander("📋 View Input Features Summary"):
@@ -382,27 +552,27 @@ def display_predictions(model, scaler, input_data, container=None):
             container.warning("""
             **Based on this prediction, we recommend:**
             
-            - 🏥 **Consult a neurologist** or movement disorder specialist as soon as possible
-            - 📋 **Request a comprehensive evaluation** including physical examination and medical history
-            - 🔍 **Additional tests** may include: DaTscan, MRI, or other neurological assessments
-            - 📝 **Document your symptoms** including when they started and how they've progressed
-            - 👨‍👩‍👧‍👦 **Bring a family member** to your appointment for additional observations
-            - ⏰ **Don't delay** - early detection can lead to better management outcomes
+            - 🏥 **Consult a neurologist** or movement disorder specialist
+            - 📋 **Request comprehensive evaluation** including medical history
+            - 🔍 **Consider additional tests** if recommended by your doctor
+            - 📝 **Document symptoms** including progression over time
+            - 👨‍👩‍👧‍👦 **Bring a family member** for additional observations
+            - ⏰ **Early consultation** can lead to better management
             
-            **Remember:** This screening tool is not a diagnosis. Only a qualified healthcare professional can diagnose Parkinson's Disease.
+            **Remember:** This is a screening tool, not a diagnosis. Only qualified healthcare professionals can diagnose Parkinson's Disease.
             """)
         else:
             container.success("""
             **Based on this prediction:**
             
             - ✅ **Low likelihood** of Parkinson's Disease based on voice analysis
-            - 🔄 **Continue monitoring** - if you notice any symptoms, consult a doctor
-            - 🎤 **Voice health matters** - maintain good vocal hygiene and health
-            - 📅 **Regular check-ups** - consider periodic screenings, especially if you have risk factors
-            - 👀 **Watch for symptoms** such as tremors, stiffness, or changes in movement
-            - 💪 **Stay healthy** - regular exercise and a balanced diet support overall neurological health
+            - 🔄 **Continue monitoring** - consult a doctor if symptoms appear
+            - 🎤 **Maintain voice health** with good vocal hygiene
+            - 📅 **Consider periodic screenings** if you have risk factors
+            - 👀 **Watch for symptoms** such as tremors or stiffness
+            - 💪 **Support neurological health** with exercise and balanced diet
             
-            **Note:** A negative result does not guarantee the absence of Parkinson's Disease. Consult a healthcare professional if you have concerns.
+            **Note:** A negative result does not guarantee absence of Parkinson's Disease.
             """)
     
     except Exception as e: 
@@ -459,9 +629,10 @@ def display_model_info(model):
                     x=importance_df['Importance'],
                     y=importance_df['Feature'],
                     orientation='h',
-                    marker_color='#2196F3',
+                    marker_color='#3399ff',
                     text=importance_df['Importance'].round(4),
-                    textposition='auto'
+                    textposition='auto',
+                    textfont=dict(color='#ffffff')
                 )
             ])
             
@@ -471,21 +642,15 @@ def display_model_info(model):
                 yaxis_title="Feature",
                 showlegend=False,
                 title="Feature Importance Ranking",
-                title_font=dict(size=16)
+                title_font=dict(size=16, color='#66b3ff'),
+                paper_bgcolor='#0a1929',
+                plot_bgcolor='#1e3a5f',
+                font=dict(color='#ffffff'),
+                xaxis=dict(tickfont=dict(color='#ffffff')),
+                yaxis=dict(tickfont=dict(color='#ffffff'))
             )
             
             st.plotly_chart(fig, use_container_width=True)
-            
-            # Interpretation
-            st.info("""
-            **Interpretation Guide:**
-            
-            - **Higher importance** means the feature contributes more to predictions
-            - **PPE (Pitch Period Entropy)** often indicates vocal instability
-            - **spread1/spread2** measure nonlinear complexity in voice signals
-            - **DFA (Detrended Fluctuation Analysis)** assesses self-similarity in voice patterns
-            - **MDVP features** measure fundamental frequency variations
-            """)
             
             # Full feature importance table
             with st.expander("📊 View Complete Feature Importance Table"):
@@ -554,7 +719,7 @@ def batch_predictions(model, scaler, uploaded_files):
                 results.append({
                     'Record': idx + 1,
                     'Source_File': row.get('File_Source', 'Unknown'),
-                    'Prediction': 'Parkinson\'s Likely' if prediction == 1 else 'No Parkinson\'s',
+                    'Prediction': 'Parkinson\'s Risk' if prediction == 1 else 'No Risk',
                     'Confidence': f"{confidence:.2%}",
                     'Risk_Level': 'High' if prediction == 1 and confidence > 0.7 else 
                                   'Medium' if prediction == 1 else 'Low'
@@ -578,7 +743,7 @@ def batch_predictions(model, scaler, uploaded_files):
         with col1:
             st.metric("Total Records", len(results))
         with col2:
-            st.metric("Positive Predictions", pos_count)
+            st.metric("High Risk Predictions", pos_count)
         with col3:
             st.metric("Positive Rate", f"{(pos_count/len(results)*100):.1f}%")
         
@@ -605,7 +770,12 @@ def batch_predictions(model, scaler, uploaded_files):
                 values=pred_counts.values,
                 names=pred_counts.index,
                 title="Prediction Distribution",
-                color_discrete_sequence=px.colors.qualitative.Set3
+                color_discrete_sequence=['#33cc33', '#ff3333']
+            )
+            fig1.update_layout(
+                paper_bgcolor='#0a1929',
+                font=dict(color='#ffffff'),
+                title_font=dict(color='#66b3ff')
             )
             st.plotly_chart(fig1, use_container_width=True)
         
@@ -616,7 +786,15 @@ def batch_predictions(model, scaler, uploaded_files):
                 y=risk_counts.values,
                 title="Risk Level Distribution",
                 color=risk_counts.index,
-                color_discrete_map={'High': 'red', 'Medium': 'orange', 'Low': 'green'}
+                color_discrete_map={'High': '#ff3333', 'Medium': '#ff9900', 'Low': '#33cc33'}
+            )
+            fig2.update_layout(
+                paper_bgcolor='#0a1929',
+                plot_bgcolor='#1e3a5f',
+                font=dict(color='#ffffff'),
+                title_font=dict(color='#66b3ff'),
+                xaxis=dict(tickfont=dict(color='#ffffff')),
+                yaxis=dict(tickfont=dict(color='#ffffff'))
             )
             st.plotly_chart(fig2, use_container_width=True)
 
@@ -630,9 +808,10 @@ def main():
     # Sidebar Navigation
     with st.sidebar:
         st.markdown("""
-        <div class="welcome-box" style="padding: 1rem; margin-bottom: 1rem;">
-            <h2 style="margin: 0;">🧠 Parkinson's Detector</h2>
-            <p style="margin: 0.5rem 0 0 0;">AI-Powered Voice Analysis</p>
+        <div style="padding: 1.5rem; background: linear-gradient(135deg, #001e3c 0%, #003366 100%); 
+                    border-radius: 10px; margin-bottom: 1.5rem; border: 1px solid #3399ff;">
+            <h2 style="margin: 0; color: #ffffff !important;">🧠 Parkinson's Detector</h2>
+            <p style="margin: 0.5rem 0 0 0; color: #99ccff !important;">AI-Powered Voice Analysis</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -641,7 +820,8 @@ def main():
         page = st.radio(
             "Navigation",
             ["🏠 Home", "🔍 Prediction", "📁 Batch Analysis", "📊 Model Insights", "ℹ️ About", "📚 Help"],
-            index=["🏠 Home", "🔍 Prediction", "📁 Batch Analysis", "📊 Model Insights", "ℹ️ About", "📚 Help"].index(st.session_state.page)
+            index=["🏠 Home", "🔍 Prediction", "📁 Batch Analysis", "📊 Model Insights", "ℹ️ About", "📚 Help"].index(st.session_state.page),
+            label_visibility="collapsed"
         )
         
         # Update session state
@@ -653,18 +833,20 @@ def main():
         # Quick stats/status section
         st.markdown("### 📊 Quick Stats")
         st.markdown("""
+        <div style="background-color: #1e3a5f; padding: 1rem; border-radius: 8px; border-left: 4px solid #3399ff;">
         - **22 Voice Features** analyzed
         - **Random Forest** algorithm
         - **Real-time** predictions
         - **Batch processing** supported
-        """)
+        </div>
+        """, unsafe_allow_html=True)
         
         st.markdown("---")
         
         st.markdown("""
-        <div style="padding: 1rem; background-color: rgba(255,255,255,0.1); border-radius: 8px;">
-        <h4>⚠️ Important Notice</h4>
-        <p style="font-size: 0.8rem;">
+        <div style="padding: 1rem; background-color: #331111; border-radius: 8px; border-left: 4px solid #ff3333;">
+        <h4 style="color: #ff9999 !important;">⚠️ Important Notice</h4>
+        <p style="font-size: 0.8rem; color: #ffcccc !important;">
         This application is for <strong>educational and research purposes</strong> only. 
         It is not a medical diagnostic tool. Always consult healthcare professionals 
         for medical advice and diagnosis.
@@ -688,7 +870,7 @@ def main():
         # Welcome Section
         st.markdown("""
             <div class="welcome-box">
-                <h1>🧠 Welcome to Prempehs Parkinson's Disease Detector</h1>
+                <h1>🧠 Welcome to Parkinson's Disease Detector</h1>
                 <p style="font-size: 1.2rem; margin-top: 1rem;">
                     An advanced AI-powered tool for early Parkinson's Disease screening using voice analysis
                 </p>
@@ -720,10 +902,10 @@ def main():
             <div class="feature-card">
                 <h3>✨ Key Features</h3>
                 <ul>
-                    <li><strong>Manual Entry:</strong> Input voice features individually with detailed descriptions</li>
+                    <li><strong>Manual Entry:</strong> Input voice features with detailed descriptions</li>
                     <li><strong>Batch Processing:</strong> Upload CSV files for multiple predictions</li>
-                    <li><strong>Real-time Analysis:</strong> Instant predictions with animated visualizations</li>
-                    <li><strong>Model Transparency:</strong> View feature importance and model insights</li>
+                    <li><strong>Real-time Analysis:</strong> Instant predictions with visualizations</li>
+                    <li><strong>Model Transparency:</strong> View feature importance and insights</li>
                     <li><strong>Educational Resources:</strong> Learn about Parkinson's Disease indicators</li>
                 </ul>
             </div>
@@ -777,8 +959,8 @@ def main():
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             st.markdown("""
-            <div style="text-align: center; padding: 1rem;">
-                <h3>Ready to Get Started?</h3>
+            <div style="text-align: center; padding: 1.5rem; background-color: #1e3a5f; border-radius: 10px; border: 1px solid #3399ff;">
+                <h3 style="color: #66b3ff !important;">Ready to Get Started?</h3>
                 <p>Choose a prediction method to begin your analysis.</p>
             </div>
             """, unsafe_allow_html=True)
@@ -938,9 +1120,9 @@ def main():
             <h4>Understanding Prediction Patterns</h4>
             <p>The model analyzes combinations of features to make predictions:</p>
             <ul>
-                <li><strong>Multiple feature interactions:</strong> Considers how features relate to each other</li>
+                <li><strong>Multiple feature interactions:</strong> Considers how features relate</li>
                 <li><strong>Threshold-based decisions:</strong> Different combinations trigger predictions</li>
-                <strong>Confidence scoring:</strong> Probability estimates for each prediction</li>
+                <li><strong>Confidence scoring:</strong> Probability estimates for each prediction</li>
                 <li><strong>Feature contribution:</strong> Each feature's impact on final decision</li>
             </ul>
             <p>This multi-faceted approach improves prediction accuracy and reliability.</p>
@@ -1016,11 +1198,11 @@ def main():
             st.markdown("""
             <div class="metric-card">
             <h4>🤖 Machine Learning</h4>
-            <ul>
-                <li>scikit-learn</li>
-                <li>Random Forest</li>
-                <li>Feature Engineering</li>
-                <li>Model Validation</li>
+            <ul style="list-style: none; padding-left: 0;">
+                <li>• scikit-learn</li>
+                <li>• Random Forest</li>
+                <li>• Feature Engineering</li>
+                <li>• Model Validation</li>
             </ul>
             </div>
             """, unsafe_allow_html=True)
@@ -1029,11 +1211,11 @@ def main():
             st.markdown("""
             <div class="metric-card">
             <h4>🌐 Web Application</h4>
-            <ul>
-                <li>Streamlit</li>
-                <li>Plotly Charts</li>
-                <li>Interactive Forms</li>
-                <li>Real-time Updates</li>
+            <ul style="list-style: none; padding-left: 0;">
+                <li>• Streamlit</li>
+                <li>• Plotly Charts</li>
+                <li>• Interactive Forms</li>
+                <li>• Real-time Updates</li>
             </ul>
             </div>
             """, unsafe_allow_html=True)
@@ -1042,18 +1224,18 @@ def main():
             st.markdown("""
             <div class="metric-card">
             <h4>📊 Data Processing</h4>
-            <ul>
-                <li>pandas</li>
-                <li>NumPy</li>
-                <li>Data Validation</li>
-                <li>Batch Processing</li>
+            <ul style="list-style: none; padding-left: 0;">
+                <li>• pandas</li>
+                <li>• NumPy</li>
+                <li>• Data Validation</li>
+                <li>• Batch Processing</li>
             </ul>
             </div>
             """, unsafe_allow_html=True)
         
         # Disclaimer
         st.markdown("---")
-        st.warning("""
+        st.error("""
         ### ⚠️ Important Medical Disclaimer
         
         **This application is for EDUCATIONAL AND RESEARCH PURPOSES ONLY.**
@@ -1181,48 +1363,6 @@ def main():
             </ol>
             </div>
             """, unsafe_allow_html=True)
-        
-        # Troubleshooting
-        st.markdown("---")
-        st.subheader("🔧 Troubleshooting Guide")
-        
-        st.markdown("""
-        <div class="feature-card">
-        <h4>Common Issues & Solutions</h4>
-        
-        **❌ Model not loading:**
-        - Ensure `parkinsons_model.pkl` and `scaler.pkl` exist in models folder
-        - Check file permissions
-        - Verify model was trained successfully
-        
-        **❌ CSV upload errors:**
-        - Verify column names match exactly
-        - Check for missing values
-        - Ensure all required columns are present
-        - Validate numerical format
-        
-        **❌ Prediction errors:**
-        - Check input values are within reasonable ranges
-        - Verify no missing features
-        - Ensure scaler was loaded correctly
-        
-        **❌ Display issues:**
-        - Refresh the browser
-        - Clear cache if needed
-        - Check internet connection for external resources
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Contact/Support
-        st.markdown("---")
-        st.markdown("""
-        <div style="text-align: center; padding: 2rem; background-color: #e6f7ff; border-radius: 10px;">
-        <h3>📞 Need More Help?</h3>
-        <p>For technical support or questions about this application:</p>
-        <p><strong>Email:</strong> support@prempeh-ai.com</p>
-        <p><strong>Research Inquiries:</strong> research@prempeh-ai.com</p>
-        </div>
-        """, unsafe_allow_html=True)
         
         show_footer()
 
