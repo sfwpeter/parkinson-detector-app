@@ -41,9 +41,12 @@ st.markdown("""
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
-    /* Main content area */
+    /* Main content area - ensure full width */
     .main .block-container {
-        background-color: #0a1929;
+        padding-top: 2rem;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        max-width: 100% !important;
     }
     
     /* Headers */
@@ -68,6 +71,7 @@ st.markdown("""
         font-size: 16px;
         font-weight: 600;
         transition: all 0.3s ease;
+        width: 100%;
     }
     
     .stButton>button:hover {
@@ -82,6 +86,7 @@ st.markdown("""
         color: #e6f7ff;
         border: 1px solid #3399ff;
         border-radius: 4px;
+        width: 100% !important;
     }
     
     .stNumberInput label {
@@ -89,12 +94,17 @@ st.markdown("""
         font-weight: 500;
     }
     
-    /* Tabs */
+    /* Tabs - ensure full width */
+    .stTabs {
+        width: 100% !important;
+    }
+    
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
         background-color: #1e3a5f;
         padding: 4px;
         border-radius: 8px;
+        width: 100% !important;
     }
     
     .stTabs [data-baseweb="tab"] {
@@ -103,6 +113,8 @@ st.markdown("""
         border-radius: 4px;
         padding: 8px 16px;
         font-weight: 500;
+        flex: 1;
+        text-align: center;
     }
     
     .stTabs [aria-selected="true"] {
@@ -110,10 +122,12 @@ st.markdown("""
         color: white !important;
     }
     
-    /* Sidebar - dark blue */
+    /* Sidebar - make it narrower */
     section[data-testid="stSidebar"] {
         background-color: #001e3c !important;
         border-right: 1px solid #3399ff;
+        min-width: 250px !important;
+        max-width: 280px !important;
     }
     
     section[data-testid="stSidebar"] * {
@@ -132,7 +146,7 @@ st.markdown("""
         margin: 5px 0;
     }
     
-    /* Welcome section */
+    /* Welcome section - full width */
     .welcome-box {
         background: linear-gradient(135deg, #001e3c 0%, #003366 100%);
         padding: 2.5rem;
@@ -142,6 +156,7 @@ st.markdown("""
         margin-bottom: 2rem;
         border: 1px solid #3399ff;
         box-shadow: 0 4px 20px rgba(51, 153, 255, 0.15);
+        width: 100% !important;
     }
     
     .welcome-box h1 {
@@ -150,7 +165,7 @@ st.markdown("""
         margin-bottom: 1rem;
     }
     
-    /* Feature cards */
+    /* Feature cards - full width */
     .feature-card {
         background-color: #1e3a5f;
         padding: 1.5rem;
@@ -158,18 +173,24 @@ st.markdown("""
         border-left: 4px solid #3399ff;
         margin-bottom: 1rem;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        width: 100% !important;
     }
     
     .feature-card h3, .feature-card h4 {
         color: #66b3ff !important;
     }
     
-    /* Prediction boxes */
+    /* Prediction boxes - full width and better layout */
     .prediction-box {
         padding: 25px;
         border-radius: 10px;
         margin: 15px 0;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        width: 100% !important;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
     
     .positive {
@@ -180,6 +201,8 @@ st.markdown("""
     
     .positive h3 {
         color: #ff9999 !important;
+        font-size: 1.8rem !important;
+        margin-bottom: 1rem !important;
     }
     
     .negative {
@@ -190,6 +213,8 @@ st.markdown("""
     
     .negative h3 {
         color: #99ff99 !important;
+        font-size: 1.8rem !important;
+        margin-bottom: 1rem !important;
     }
     
     /* Metric cards */
@@ -200,42 +225,25 @@ st.markdown("""
         border: 1px solid #3399ff;
         margin: 10px 0;
         text-align: center;
+        height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
     
-    /* Progress bars */
-    .stProgress > div > div > div > div {
-        background-color: #3399ff;
+    /* Plotly charts - full width */
+    .js-plotly-plot, .plotly, .plot-container {
+        width: 100% !important;
     }
     
-    /* Expanders */
-    .streamlit-expanderHeader {
-        background-color: #1e3a5f;
-        color: #66b3ff !important;
-        border-radius: 6px;
-        border: 1px solid #3399ff;
+    /* Make sure all columns use full available space */
+    .stColumn {
+        width: 100% !important;
     }
     
-    /* Dataframes */
-    .dataframe {
-        background-color: #1e3a5f !important;
-    }
-    
-    /* Alert boxes */
-    .stAlert {
-        background-color: #1e3a5f;
-        border-left: 4px solid #3399ff;
-        border-radius: 8px;
-    }
-    
-    .stAlert [data-testid="stMarkdownContainer"] p {
-        color: #cce7ff !important;
-    }
-    
-    /* File uploader */
-    .stFileUploader>div>div {
-        background-color: #1e3a5f;
-        border: 2px dashed #3399ff;
-        border-radius: 8px;
+    /* Ensure containers expand */
+    .stContainer {
+        width: 100% !important;
     }
     
     /* Footer */
@@ -246,67 +254,38 @@ st.markdown("""
         font-size: 0.9rem;
         margin-top: 3rem;
         border-top: 1px solid #3399ff;
+        width: 100% !important;
     }
     
-    /* Fix all text visibility */
-    .stDataFrame, .stTable {
-        color: #cce7ff !important;
+    /* Dataframes - full width */
+    .stDataFrame {
+        width: 100% !important;
     }
     
-    .stDataFrame td, .stDataFrame th {
-        color: #cce7ff !important;
-        background-color: #1e3a5f !important;
+    /* Make sure text doesn't overflow */
+    .prediction-box p {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
     }
     
-    /* Fix plotly charts background */
-    .js-plotly-plot {
-        background-color: #1e3a5f !important;
+    /* Center gauge container */
+    .gauge-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
     }
     
-    /* Info boxes */
-    .stInfo {
-        background-color: #1e3a5f !important;
-        border-left: 4px solid #3399ff !important;
+    /* Fix for columns in main content */
+    .main .stColumn {
+        padding: 0 10px;
     }
     
-    /* Warning boxes */
-    .stWarning {
-        background-color: #332211 !important;
-        border-left: 4px solid #ff9900 !important;
-    }
-    
-    /* Error boxes */
-    .stError {
-        background-color: #331111 !important;
-        border-left: 4px solid #ff3333 !important;
-    }
-    
-    /* Success boxes */
-    .stSuccess {
-        background-color: #113311 !important;
-        border-left: 4px solid #33cc33 !important;
-    }
-    
-    /* Radio buttons in sidebar */
-    section[data-testid="stSidebar"] .stRadio label {
-        color: #e6f7ff !important;
-        padding: 8px;
-        border-radius: 6px;
-        transition: all 0.2s ease;
-    }
-    
-    section[data-testid="stSidebar"] .stRadio label:hover {
-        background-color: #2d4a75;
-    }
-    
-    /* Markdown text */
-    .stMarkdown {
-        color: #cce7ff !important;
-    }
-    
-    /* Spinner */
-    .stSpinner > div {
-        border-color: #3399ff transparent transparent transparent !important;
+    /* Ensure charts use container width */
+    [data-testid="stPlotlyChart"] {
+        width: 100% !important;
     }
     
     </style>
@@ -329,11 +308,11 @@ def show_gauge(container, percent:int, color:str, label:str):
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=percent,
-        number={'valueformat': "d", 'suffix': '%', 'font': {'size': 28, 'color': '#ffffff'}},
-        title={'text': label, 'font': {'size': 16, 'color': '#99ccff'}},
+        number={'valueformat': "d", 'suffix': '%', 'font': {'size': 32, 'color': '#ffffff'}},
+        title={'text': label, 'font': {'size': 18, 'color': '#99ccff'}},
         gauge={
-            'axis': {'range': [0, 100], 'tickwidth': 2, 'tickcolor': '#3399ff', 'tickfont': {'color': '#ffffff'}},
-            'bar': {'color': color},
+            'axis': {'range': [0, 100], 'tickwidth': 2, 'tickcolor': '#3399ff', 'tickfont': {'color': '#ffffff', 'size': 12}},
+            'bar': {'color': color, 'thickness': 0.8},
             'bgcolor': "#1e3a5f",
             'borderwidth': 2,
             'bordercolor': "#3399ff",
@@ -351,20 +330,27 @@ def show_gauge(container, percent:int, color:str, label:str):
     ))
     
     fig.update_layout(
-        margin=dict(l=30, r=30, t=40, b=20),
-        height=340,
+        margin=dict(l=40, r=40, t=60, b=20),
+        height=400,
+        width=400,
         paper_bgcolor='#0a1929',
         font={'color': "#ffffff"}
     )
-    container.plotly_chart(fig, use_container_width=True)
+    
+    # Create a container for the gauge to center it
+    gauge_container = container.container()
+    with gauge_container:
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.plotly_chart(fig, use_container_width=True)
 
 # ---------- Footer Function ----------
 def show_footer():
     """Display copyright footer on all pages"""
     st.markdown("""
     <div class="footer">
-        <p style="margin: 0.2rem;">© 2025 Parkinson's Disease Detector</p>
-        <p style="margin: 0.2rem;">Developed by Peter Boakye Prempeh ❤️ for medical research</p>
+        <p style="margin: 0.2rem;">© 2024 Parkinson's Disease Detector</p>
+        <p style="margin: 0.2rem;">Developed with ❤️ for medical research</p>
         <p style="margin: 0.2rem; font-size: 0.8rem; color: #66b3ff !important;">For educational purposes only</p>
     </div>
     """, unsafe_allow_html=True)
@@ -451,7 +437,7 @@ def create_input_form():
     return input_data
 
 def display_predictions(model, scaler, input_data, container=None):
-    """Display prediction results with enhanced visualization."""
+    """Display prediction results with proper layout."""
     if container is None:
         container = st
     
@@ -476,86 +462,83 @@ def display_predictions(model, scaler, input_data, container=None):
         # Get explanation
         explanation = get_prediction_explanation(prediction, probabilities)
         
-        # Create a full-width container for the main results
-        results_container = container.container()
+        # Create a container for the top section
+        top_container = container.container()
         
-        with results_container:
-            # Top section with prediction and gauge side by side
-            col1, col2 = st.columns([1.5, 1])  # Adjusted ratio
+        with top_container:
+            # Use a single column layout for the prediction box to ensure full width
+            if prediction == 1:
+                st.markdown(
+                    f'<div class="prediction-box positive">'
+                    f'<h3>⚠️ Parkinson\'s Disease Risk Detected</h3>'
+                    f'<p><strong>Confidence Level:</strong> {explanation["confidence"]:.2f}%</p>'
+                    f'<p>{explanation["description"]}</p>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
+            else:
+                st.markdown(
+                    f'<div class="prediction-box negative">'
+                    f'<h3>✅ No Parkinson\'s Disease Risk Detected</h3>'
+                    f'<p><strong>Confidence Level:</strong> {explanation["confidence"]:.2f}%</p>'
+                    f'<p>{explanation["description"]}</p>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
+        
+        # Create a separate container for the gauge and probability chart
+        metrics_container = container.container()
+        
+        with metrics_container:
+            # Use two columns for gauge and probability distribution
+            col1, col2 = st.columns(2)
             
             with col1:
-                if prediction == 1:
-                    st.markdown(
-                        f'<div class="prediction-box positive">'
-                        f'<h3>⚠️ Parkinson\'s Disease Risk Detected</h3>'
-                        f'<p><strong>Confidence Level:</strong> {explanation["confidence"]:.2f}%</p>'
-                        f'<p>{explanation["description"]}</p>'
-                        f'</div>',
-                        unsafe_allow_html=True
-                    )
-                else:
-                    st.markdown(
-                        f'<div class="prediction-box negative">'
-                        f'<h3>✅ No Parkinson\'s Disease Risk Detected</h3>'
-                        f'<p><strong>Confidence Level:</strong> {explanation["confidence"]:.2f}%</p>'
-                        f'<p>{explanation["description"]}</p>'
-                        f'</div>',
-                        unsafe_allow_html=True
-                    )
-            
-            with col2:
-                # Add some vertical spacing
-                st.markdown("<br>", unsafe_allow_html=True)
-                # Gauge
+                # Gauge chart
+                st.markdown("### 📊 Confidence Level")
                 conf_percent = explanation['confidence']
                 gauge_color = "#ff4d4d" if prediction == 1 else "#4dff4d"
-                show_gauge(st, conf_percent, gauge_color, "Confidence Level")
-        
-        # Display probability distribution in its own section
-        st.subheader("📈 Probability Distribution")
-        
-        fig = go.Figure(data=[
-            go.Bar(
-                x=['Negative', 'Positive'],
-                y=[probabilities[0] * 100, probabilities[1] * 100],
-                marker_color=['#33cc33', '#ff3333'],
-                text=[f'{probabilities[0]*100:.2f}%', f'{probabilities[1]*100:.2f}%'],
-                textposition='auto',
-                textfont=dict(size=14, color='#ffffff')
-            )
-        ])
-        
-        fig.update_layout(
-            height=350,  # Slightly reduced height
-            showlegend=False,
-            yaxis_title="Probability (%)",
-            xaxis_title="Prediction Class",
-            title="Probability Distribution of Prediction Classes",
-            title_font=dict(size=16, color='#66b3ff'),
-            paper_bgcolor='#0a1929',
-            plot_bgcolor='#1e3a5f',
-            font=dict(color='#ffffff'),
-            xaxis=dict(tickfont=dict(color='#ffffff')),
-            yaxis=dict(tickfont=dict(color='#ffffff')),
-            margin=dict(l=50, r=50, t=50, b=50)  # Add margins
-        )
-        
-        st.plotly_chart(fig, use_container_width=True)
-        
-        # Feature importance and extreme values
-        if hasattr(model, 'feature_importances_'):
-            extreme_features = []
-            for feat in FEATURE_COLUMNS:
-                val = input_data.get(feat, 0)
-                # Check if value is significantly different from normal range
-                if feat in ['MDVP:Jitter(%)', 'MDVP:Shimmer', 'NHR'] and val > 0.1:
-                    extreme_features.append(feat)
+                show_gauge(st, conf_percent, gauge_color, "Confidence")
             
-            if extreme_features:
-                st.warning(f"⚠️ **Note:** High values detected in: {', '.join(extreme_features)}")
+            with col2:
+                # Probability distribution
+                st.markdown("### 📈 Probability Distribution")
+                
+                fig = go.Figure(data=[
+                    go.Bar(
+                        x=['Negative', 'Positive'],
+                        y=[probabilities[0] * 100, probabilities[1] * 100],
+                        marker_color=['#33cc33', '#ff3333'],
+                        text=[f'{probabilities[0]*100:.2f}%', f'{probabilities[1]*100:.2f}%'],
+                        textposition='auto',
+                        textfont=dict(size=16, color='#ffffff')
+                    )
+                ])
+                
+                fig.update_layout(
+                    height=400,
+                    showlegend=False,
+                    yaxis_title="Probability (%)",
+                    yaxis_range=[0, 100],
+                    xaxis_title="Prediction Class",
+                    paper_bgcolor='#0a1929',
+                    plot_bgcolor='#1e3a5f',
+                    font=dict(color='#ffffff', size=12),
+                    xaxis=dict(
+                        tickfont=dict(color='#ffffff', size=14),
+                        title_font=dict(size=14)
+                    ),
+                    yaxis=dict(
+                        tickfont=dict(color='#ffffff', size=14),
+                        title_font=dict(size=14)
+                    ),
+                    margin=dict(l=60, r=60, t=40, b=60)
+                )
+                
+                st.plotly_chart(fig, use_container_width=True)
         
         # Display feature values table
-        with st.expander("📋 View Input Features Summary", expanded=False):
+        with container.expander("📋 View Input Features Summary", expanded=False):
             features_display = pd.DataFrame({
                 'Feature': list(input_data.keys()),
                 'Value': list(input_data.values())
@@ -564,11 +547,11 @@ def display_predictions(model, scaler, input_data, container=None):
             st.dataframe(features_display, use_container_width=True)
         
         # Recommendations based on prediction
-        st.markdown("---")
-        st.subheader("💡 Recommendations")
+        container.markdown("---")
+        container.subheader("💡 Recommendations")
         
         if prediction == 1:
-            st.warning("""
+            container.warning("""
             **Based on this prediction, we recommend:**
             
             - 🏥 **Consult a neurologist** or movement disorder specialist
@@ -581,7 +564,7 @@ def display_predictions(model, scaler, input_data, container=None):
             **Remember:** This is a screening tool, not a diagnosis. Only qualified healthcare professionals can diagnose Parkinson's Disease.
             """)
         else:
-            st.success("""
+            container.success("""
             **Based on this prediction:**
             
             - ✅ **Low likelihood** of Parkinson's Disease based on voice analysis
@@ -651,7 +634,7 @@ def display_model_info(model):
                     marker_color='#3399ff',
                     text=importance_df['Importance'].round(4),
                     textposition='auto',
-                    textfont=dict(color='#ffffff')
+                    textfont=dict(color='#ffffff', size=12)
                 )
             ])
             
@@ -661,12 +644,13 @@ def display_model_info(model):
                 yaxis_title="Feature",
                 showlegend=False,
                 title="Feature Importance Ranking",
-                title_font=dict(size=16, color='#66b3ff'),
+                title_font=dict(size=18, color='#66b3ff'),
                 paper_bgcolor='#0a1929',
                 plot_bgcolor='#1e3a5f',
-                font=dict(color='#ffffff'),
-                xaxis=dict(tickfont=dict(color='#ffffff')),
-                yaxis=dict(tickfont=dict(color='#ffffff'))
+                font=dict(color='#ffffff', size=12),
+                xaxis=dict(tickfont=dict(color='#ffffff', size=12)),
+                yaxis=dict(tickfont=dict(color='#ffffff', size=12)),
+                margin=dict(l=100, r=50, t=50, b=50)
             )
             
             st.plotly_chart(fig, use_container_width=True)
@@ -778,44 +762,6 @@ def batch_predictions(model, scaler, uploaded_files):
             file_name="batch_predictions.csv",
             mime="text/csv"
         )
-        
-        # Visualizations
-        st.subheader("📈 Batch Analysis")
-        tab1, tab2 = st.tabs(["Distribution", "Risk Levels"])
-        
-        with tab1:
-            pred_counts = results_df['Prediction'].value_counts()
-            fig1 = px.pie(
-                values=pred_counts.values,
-                names=pred_counts.index,
-                title="Prediction Distribution",
-                color_discrete_sequence=['#33cc33', '#ff3333']
-            )
-            fig1.update_layout(
-                paper_bgcolor='#0a1929',
-                font=dict(color='#ffffff'),
-                title_font=dict(color='#66b3ff')
-            )
-            st.plotly_chart(fig1, use_container_width=True)
-        
-        with tab2:
-            risk_counts = results_df['Risk_Level'].value_counts()
-            fig2 = px.bar(
-                x=risk_counts.index,
-                y=risk_counts.values,
-                title="Risk Level Distribution",
-                color=risk_counts.index,
-                color_discrete_map={'High': '#ff3333', 'Medium': '#ff9900', 'Low': '#33cc33'}
-            )
-            fig2.update_layout(
-                paper_bgcolor='#0a1929',
-                plot_bgcolor='#1e3a5f',
-                font=dict(color='#ffffff'),
-                title_font=dict(color='#66b3ff'),
-                xaxis=dict(tickfont=dict(color='#ffffff')),
-                yaxis=dict(tickfont=dict(color='#ffffff'))
-            )
-            st.plotly_chart(fig2, use_container_width=True)
 
 def main():
     """Main application function with enhanced navigation."""
@@ -824,12 +770,12 @@ def main():
     if 'page' not in st.session_state:
         st.session_state.page = "🏠 Home"
     
-    # Sidebar Navigation
+    # Sidebar Navigation - make it narrower
     with st.sidebar:
         st.markdown("""
         <div style="padding: 1.5rem; background: linear-gradient(135deg, #001e3c 0%, #003366 100%); 
                     border-radius: 10px; margin-bottom: 1.5rem; border: 1px solid #3399ff;">
-            <h2 style="margin: 0; color: #ffffff !important;">🧠 Parkinson's Detector</h2>
+            <h2 style="margin: 0; color: #ffffff !important; font-size: 1.5rem;">🧠 Parkinson's Detector</h2>
             <p style="margin: 0.5rem 0 0 0; color: #99ccff !important;">AI-Powered Voice Analysis</p>
         </div>
         """, unsafe_allow_html=True)
@@ -853,10 +799,10 @@ def main():
         st.markdown("### 📊 Quick Stats")
         st.markdown("""
         <div style="background-color: #1e3a5f; padding: 1rem; border-radius: 8px; border-left: 4px solid #3399ff;">
-        - 22 Voice Features analyzed
-        - Random Forest algorithm
-        - Real-time predictions
-        - Batch processing supported
+        <p style="margin: 0.3rem 0;">• 22 Voice Features</p>
+        <p style="margin: 0.3rem 0;">• Random Forest Model</p>
+        <p style="margin: 0.3rem 0;">• Real-time Analysis</p>
+        <p style="margin: 0.3rem 0;">• Batch Processing</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -864,11 +810,9 @@ def main():
         
         st.markdown("""
         <div style="padding: 1rem; background-color: #331111; border-radius: 8px; border-left: 4px solid #ff3333;">
-        <h4 style="color: #ff9999 !important;">⚠️ Important Notice</h4>
-        <p style="font-size: 0.8rem; color: #ffcccc !important;">
-        This application is for <strong>educational and research purposes</strong> only. 
-        It is not a medical diagnostic tool. Always consult healthcare professionals 
-        for medical advice and diagnosis.
+        <h4 style="color: #ff9999 !important; font-size: 1rem;">⚠️ Important Notice</h4>
+        <p style="font-size: 0.8rem; color: #ffcccc !important; margin: 0;">
+        For educational and research purposes only. Not a medical diagnostic tool.
         </p>
         </div>
         """, unsafe_allow_html=True)
@@ -1027,12 +971,9 @@ def main():
             for error in errors:
                 st.warning(f"- {error}")
         
-        # Predict button
-        col1, col2 = st.columns([1, 3])
-        
-        with col1:
-            if st.button("🔍 Make Prediction", use_container_width=True):
-                display_predictions(model, scaler, input_data)
+        # Predict button - full width
+        if st.button("🔍 Make Prediction", use_container_width=True, type="primary"):
+            display_predictions(model, scaler, input_data)
         
         # Footer
         show_footer()
@@ -1083,7 +1024,7 @@ def main():
         )
         
         if uploaded_files:
-            if st.button("🚀 Process Batch Files", use_container_width=True):
+            if st.button("🚀 Process Batch Files", use_container_width=True, type="primary"):
                 batch_predictions(model, scaler, uploaded_files)
         
         show_footer()
@@ -1097,56 +1038,6 @@ def main():
             return
         
         display_model_info(model)
-        
-        # Additional analysis
-        st.markdown("---")
-        st.subheader("🔍 Model Performance Analysis")
-        
-        # Create tabs for different analyses
-        tab1, tab2, tab3 = st.tabs(["Feature Relationships", "Model Architecture", "Prediction Patterns"])
-        
-        with tab1:
-            st.markdown("""
-            <div class="feature-card">
-            <h4>Feature Relationships in Parkinson's Disease</h4>
-            <p>Key patterns observed in Parkinson's patients:</p>
-            <ul>
-                <li><strong>Increased Jitter & Shimmer:</strong> Indicates vocal instability</li>
-                <li><strong>Higher NHR values:</strong> More noise in vocal signal</li>
-                <li><strong>Lower HNR values:</strong> Reduced harmonic clarity</li>
-                <li><strong>Altered nonlinear features:</strong> Changes in voice complexity</li>
-            </ul>
-            <p>These patterns help the model distinguish between healthy and affected voices.</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with tab2:
-            st.markdown("""
-            <div class="feature-card">
-            <h4>Model Architecture Details</h4>
-            <p><strong>Algorithm:</strong> Random Forest Classifier</p>
-            <p><strong>Number of Trees:</strong> 100 (default)</p>
-            <p><strong>Max Depth:</strong> Optimized for voice feature analysis</p>
-            <p><strong>Feature Selection:</strong> All 22 voice features used</p>
-            <p><strong>Cross-validation:</strong> 5-fold cross-validation applied</p>
-            <p><strong>Performance Metrics:</strong> Accuracy, Precision, Recall, F1-score</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with tab3:
-            st.markdown("""
-            <div class="feature-card">
-            <h4>Understanding Prediction Patterns</h4>
-            <p>The model analyzes combinations of features to make predictions:</p>
-            <ul>
-                <li><strong>Multiple feature interactions:</strong> Considers how features relate</li>
-                <li><strong>Threshold-based decisions:</strong> Different combinations trigger predictions</li>
-                <li><strong>Confidence scoring:</strong> Probability estimates for each prediction</li>
-                <li><strong>Feature contribution:</strong> Each feature's impact on final decision</li>
-            </ul>
-            <p>This multi-faceted approach improves prediction accuracy and reliability.</p>
-            </div>
-            """, unsafe_allow_html=True)
         
         show_footer()
     
@@ -1337,51 +1228,6 @@ def main():
                 for feature_name, description in info['features'].items():
                     with st.expander(f"**{feature_name}**"):
                         st.markdown(f"**Description:** {description}")
-                        
-                        # Add typical ranges if available
-                        typical_ranges = {
-                            "MDVP:Fo(Hz)": "100-300 Hz (varies by gender/age)",
-                            "MDVP:Jitter(%)": "<0.5% normal, >0.8% may indicate issues",
-                            "MDVP:Shimmer": "<3% normal, >5% may indicate issues",
-                            "NHR": "<0.1 normal, >0.2 may indicate issues",
-                            "HNR": ">20 dB normal, <15 dB may indicate issues"
-                        }
-                        
-                        if feature_name in typical_ranges:
-                            st.markdown(f"**Typical Range:** {typical_ranges[feature_name]}")
-        
-        # Usage Guide
-        st.markdown("---")
-        st.subheader("🎯 How to Use This Application")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("""
-            <div class="feature-card">
-            <h4>🔍 Single Prediction</h4>
-            <ol>
-                <li>Go to <strong>Prediction</strong> page</li>
-                <li>Enter voice feature values</li>
-                <li>Click <strong>Make Prediction</strong></li>
-                <li>View results and recommendations</li>
-            </ol>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            st.markdown("""
-            <div class="feature-card">
-            <h4>📁 Batch Analysis</h4>
-            <ol>
-                <li>Go to <strong>Batch Analysis</strong> page</li>
-                <li>Download sample CSV template</li>
-                <li>Prepare your data file(s)</li>
-                <li>Upload CSV file(s)</li>
-                <li>Process and view results</li>
-            </ol>
-            </div>
-            """, unsafe_allow_html=True)
         
         show_footer()
 
