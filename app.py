@@ -363,8 +363,8 @@ def show_footer():
     """Display copyright footer on all pages"""
     st.markdown("""
     <div class="footer">
-        <p style="margin: 0.2rem;">© 2024 Parkinson's Disease Detector</p>
-        <p style="margin: 0.2rem;">Developed with ❤️ for medical research</p>
+        <p style="margin: 0.2rem;">© 2025 Parkinson's Disease Detector</p>
+        <p style="margin: 0.2rem;">Developed by Peter Boakye Prempeh ❤️ for medical research</p>
         <p style="margin: 0.2rem; font-size: 0.8rem; color: #66b3ff !important;">For educational purposes only</p>
     </div>
     """, unsafe_allow_html=True)
