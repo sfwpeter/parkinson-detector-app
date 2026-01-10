@@ -834,10 +834,10 @@ def main():
         st.markdown("### 📊 Quick Stats")
         st.markdown("""
         <div style="background-color: #1e3a5f; padding: 1rem; border-radius: 8px; border-left: 4px solid #3399ff;">
-        - **22 Voice Features** analyzed
-        - **Random Forest** algorithm
-        - **Real-time** predictions
-        - **Batch processing** supported
+        - 22 Voice Features analyzed
+        - Random Forest algorithm
+        - Real-time predictions
+        - Batch processing supported
         </div>
         """, unsafe_allow_html=True)
         
