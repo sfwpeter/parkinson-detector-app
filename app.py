@@ -476,37 +476,43 @@ def display_predictions(model, scaler, input_data, container=None):
         # Get explanation
         explanation = get_prediction_explanation(prediction, probabilities)
         
-        # Display results
-        col1, col2 = container.columns([2, 1])
+        # Create a full-width container for the main results
+        results_container = container.container()
         
-        with col1:
-            if prediction == 1:
-                container.markdown(
-                    f'<div class="prediction-box positive">'
-                    f'<h3>⚠️ Parkinson\'s Disease Risk Detected</h3>'
-                    f'<p><strong>Confidence Level:</strong> {explanation["confidence"]:.2f}%</p>'
-                    f'<p>{explanation["description"]}</p>'
-                    f'</div>',
-                    unsafe_allow_html=True
-                )
-            else:
-                container.markdown(
-                    f'<div class="prediction-box negative">'
-                    f'<h3>✅ No Parkinson\'s Disease Risk Detected</h3>'
-                    f'<p><strong>Confidence Level:</strong> {explanation["confidence"]:.2f}%</p>'
-                    f'<p>{explanation["description"]}</p>'
-                    f'</div>',
-                    unsafe_allow_html=True
-                )
+        with results_container:
+            # Top section with prediction and gauge side by side
+            col1, col2 = st.columns([1.5, 1])  # Adjusted ratio
+            
+            with col1:
+                if prediction == 1:
+                    st.markdown(
+                        f'<div class="prediction-box positive">'
+                        f'<h3>⚠️ Parkinson\'s Disease Risk Detected</h3>'
+                        f'<p><strong>Confidence Level:</strong> {explanation["confidence"]:.2f}%</p>'
+                        f'<p>{explanation["description"]}</p>'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+                else:
+                    st.markdown(
+                        f'<div class="prediction-box negative">'
+                        f'<h3>✅ No Parkinson\'s Disease Risk Detected</h3>'
+                        f'<p><strong>Confidence Level:</strong> {explanation["confidence"]:.2f}%</p>'
+                        f'<p>{explanation["description"]}</p>'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+            
+            with col2:
+                # Add some vertical spacing
+                st.markdown("<br>", unsafe_allow_html=True)
+                # Gauge
+                conf_percent = explanation['confidence']
+                gauge_color = "#ff4d4d" if prediction == 1 else "#4dff4d"
+                show_gauge(st, conf_percent, gauge_color, "Confidence Level")
         
-        with col2:
-            # Gauge
-            conf_percent = explanation['confidence']
-            gauge_color = "#ff4d4d" if prediction == 1 else "#4dff4d"
-            show_gauge(container, conf_percent, gauge_color, "Confidence Level")
-        
-        # Display probability distribution
-        container.subheader("📈 Probability Distribution")
+        # Display probability distribution in its own section
+        st.subheader("📈 Probability Distribution")
         
         fig = go.Figure(data=[
             go.Bar(
@@ -520,7 +526,7 @@ def display_predictions(model, scaler, input_data, container=None):
         ])
         
         fig.update_layout(
-            height=400,
+            height=350,  # Slightly reduced height
             showlegend=False,
             yaxis_title="Probability (%)",
             xaxis_title="Prediction Class",
@@ -530,26 +536,39 @@ def display_predictions(model, scaler, input_data, container=None):
             plot_bgcolor='#1e3a5f',
             font=dict(color='#ffffff'),
             xaxis=dict(tickfont=dict(color='#ffffff')),
-            yaxis=dict(tickfont=dict(color='#ffffff'))
+            yaxis=dict(tickfont=dict(color='#ffffff')),
+            margin=dict(l=50, r=50, t=50, b=50)  # Add margins
         )
         
-        container.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Feature importance and extreme values
+        if hasattr(model, 'feature_importances_'):
+            extreme_features = []
+            for feat in FEATURE_COLUMNS:
+                val = input_data.get(feat, 0)
+                # Check if value is significantly different from normal range
+                if feat in ['MDVP:Jitter(%)', 'MDVP:Shimmer', 'NHR'] and val > 0.1:
+                    extreme_features.append(feat)
+            
+            if extreme_features:
+                st.warning(f"⚠️ **Note:** High values detected in: {', '.join(extreme_features)}")
         
         # Display feature values table
-        with container.expander("📋 View Input Features Summary"):
+        with st.expander("📋 View Input Features Summary", expanded=False):
             features_display = pd.DataFrame({
                 'Feature': list(input_data.keys()),
                 'Value': list(input_data.values())
             }).round(6)
             
-            container.dataframe(features_display, use_container_width=True)
+            st.dataframe(features_display, use_container_width=True)
         
         # Recommendations based on prediction
-        container.markdown("---")
-        container.subheader("💡 Recommendations")
+        st.markdown("---")
+        st.subheader("💡 Recommendations")
         
         if prediction == 1:
-            container.warning("""
+            st.warning("""
             **Based on this prediction, we recommend:**
             
             - 🏥 **Consult a neurologist** or movement disorder specialist
@@ -562,7 +581,7 @@ def display_predictions(model, scaler, input_data, container=None):
             **Remember:** This is a screening tool, not a diagnosis. Only qualified healthcare professionals can diagnose Parkinson's Disease.
             """)
         else:
-            container.success("""
+            st.success("""
             **Based on this prediction:**
             
             - ✅ **Low likelihood** of Parkinson's Disease based on voice analysis
